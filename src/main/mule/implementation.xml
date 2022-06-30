@@ -21,7 +21,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 output application/json
 ---
 {
-	message : "No customer found"
+	message : "No customer found."
 }]]></ee:set-payload>
 						</ee:message>
 					</ee:transform>
@@ -65,7 +65,7 @@ payload filter (customer, index) -> (customer.clientKey != vars.clientKey)]]></e
 output application/json
 ---
 {
-	message : "Internal error"
+	message : "Internal error."
 }]]></ee:set-payload>
 								</ee:message>
 								<ee:variables>
@@ -90,7 +90,7 @@ output application/java
 output application/json
 ---
 {
-	message: "No customer found"
+	message: "No customer found."
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -110,7 +110,7 @@ output application/json
 output application/json
 ---
 {
-	message : "No customer found"
+	message : "No customer found."
 }]]></ee:set-payload>
 						</ee:message>
 					</ee:transform>
