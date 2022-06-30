@@ -8,12 +8,60 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="customermngmt-test-suite.xml" />
-	<munit:test name="customermngmt-test-suite-customermngmt-mainTest" doc:id="e944c821-a46c-4797-a1d3-8dd6aaa48dde" description="Test">
+	<munit:test name="customermngmt-test-suite-customermngmt-mainTest" doc:id="2ddbfc34-3c7d-45bb-b735-d0092032d9bc" description="Test" expectedErrorType="APIKIT:NOT_IMPLEMENTED">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="be0453bd-1e4f-4c2e-9b67-8baa0dc8ef46" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="customermngmt-config" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="0134f791-2b96-4480-82ea-ba70a7443516" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to customermngmt-main" doc:id="d40cfdee-27c2-4f4f-a8bb-d2b4d37c20ee" name="customermngmt-main"/>
+			<flow-ref doc:name="Flow-ref to customermngmt-main" doc:id="0458eb9c-3de4-4e88-8b5a-c1bf6a055130" name="customermngmt-main"/>
 		</munit:execution>
 		<munit:validation >
-			<logger level="INFO" doc:name="Logger" doc:id="714cfad5-da47-4a9f-a1d7-7ff53acdfce8" message="#[payload]"/>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="e5d18382-b8c7-4fba-a8b8-d5ff87f3ff35" is="#[MunitTools::equalTo('Not acceptable')]" expression="#[payload.message]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customermngmt-test-suite-customermngmt-mainTest1" doc:id="4688774f-8fee-4523-b51c-5d1513bd6185" description="Test" expectedErrorType="APIKIT:NOT_ACCEPTABLE">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="46260d0f-4ef1-46a6-b4bc-d317f57b6fb7" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="customermngmt-config" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="0134f791-2b96-4480-82ea-ba70a7443516" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to customermngmt-main" doc:id="e739cb2e-7067-41c1-9b7a-90eb71c4fac9" name="customermngmt-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a7aa3ebf-7791-4389-ac10-5eb9eb217f4b" is="#[MunitTools::equalTo('Not acceptable')]" expression="#[payload.message]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customermngmt-test-suite-customermngmt-consoleTest" doc:id="9bc80827-583e-402e-9d9c-64f26a69b5d9" description="Test" expectedErrorType="APIKIT:NOT_FOUND">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ddd7b758-85ff-4a95-ad9f-928d3a6c15b6" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="customermngmt-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to customermngmt-console" doc:id="a7af2b40-4105-4397-aa81-0b8f8c9573a4" name="customermngmt-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="857faa36-a3df-4ae2-9c8b-c2f0deef1773" expression="#[payload.message]" is="#[MunitTools::equalTo('Resource not found')]"/>
 		</munit:validation>
 	</munit:test>
 

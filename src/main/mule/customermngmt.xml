@@ -97,7 +97,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="customermngmt-console">
+    <flow name="customermngmt-console" doc:id="42849804-02ee-42bc-a971-f60eb4e3c844">
         <http:listener config-ref="customermngmt-httpListenerConfig" path="/console/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>

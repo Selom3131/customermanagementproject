@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="get:\customer:KO-test" doc:id="578154cb-1530-4369-8a29-3f8fcd9c4c5b" description="Test" expectedErrorType="FILE:ILLEGAL_PATH">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b5df5f44-e563-4b05-a412-7b7c5b404e7f" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Read" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="c049c9bf-a878-4854-8bab-53ef99062725" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="FILE:ILLEGAL_PATH" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Event" doc:id="ad7e7545-d8da-4974-8a4e-f38184c03ad5" />
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\customer:customermngmt-config" doc:id="2a6f30f5-d57f-4666-8cde-61c4c02ffdde" name="get:\customer:customermngmt-config" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a9e5d310-e80a-4407-8c76-5a2a1992ae71" expression="#[payload.message]" is="#[MunitTools::equalTo('No customer found')]"/>
+		</munit:validation>
+	</munit:test>
+	
+	<munit:test name="get:\customer:OK-test" doc:id="43d6ef80-cc5e-42f8-97a3-2efc77212f7d" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Read" doc:id="cfccb275-bfa4-4448-97f1-25d0a4a0c085" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c049c9bf-a878-4854-8bab-53ef99062725" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv --- readUrl('classpath://getcustomerOKtest\mock_payload.dwl')]" mediaType="text/csv" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getcustomerOKtest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getcustomerOKtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="bf0943c2-89be-4aa6-9f40-56205fffb50e" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b6930fcb-86b2-42cc-bbf5-ca9b2630062b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="e1b5eede-0679-4abb-b3d4-e922245e5513" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomerOKtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="be2a8e38-73db-4817-96e1-53a347fd5833" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomerOKtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="30bf2feb-8f8f-40af-824e-c4c08dcec8d3" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomerOKtest::spy_assert_variables
+---
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="75e5a604-6701-4017-aef9-a73c4353006c" >
+				<munit:payload value="#[readUrl('classpath://getcustomerOKtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getcustomerOKtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getcustomerOKtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\customer:customermngmt-config" doc:id="846ebfb6-42bb-4fce-b5f0-7f9d4d6bb1e0" name="get:\customer:customermngmt-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="812dbb25-57cb-4623-8405-04c460358d46" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomerOKtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="2bcbcb84-6b02-48a7-831a-3939dd26dc64" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b6930fcb-86b2-42cc-bbf5-ca9b2630062b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+<!-- [STUDIO:"delete:\customer:OK-test"]	<munit:test name="delete:\customer:OK-test" doc:id="c9b2b066-07de-419a-860a-6fb469063dea" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Set Variable clientKey" doc:id="bbb3b187-9ed7-4b2c-8c2b-3750095900dc" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="96092611-f640-4684-a410-b3359a933aba" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://deletecustomerOKtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="clientKey" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Read" doc:id="fc9673f2-583e-474a-9e33-e039a9cd91cb" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_payload.dwl')]" mediaType="text/csv" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://deletecustomerOKtest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://deletecustomerOKtest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="clientKey" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Set Payload" doc:id="fe3569b4-0d24-4b69-a417-f07b26d2fef6" processor="set-payload">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="bdfe495e-ecd5-499a-8851-54aa4cd467e1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/plain &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_payload1.dwl')]" mediaType="text/plain" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Write" doc:id="8218f551-c25d-4340-abc4-7541c33ad0c2" processor="file:write">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1594c638-16a4-477c-9535-a381f3daccf7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_payload2.dwl')]" mediaType="application/csv" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://deletecustomerOKtest\mock_attributes1.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://deletecustomerOKtest\mock_variable_4.dwl')]" />
+						<munit-tools:variable key="clientKey" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="searchRes" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest\mock_variable_6.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="3046d1af-a3e4-4e1b-989b-cdb63812d8b7" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="bec3d0e9-7b10-45d3-80ab-48874e1d3b59" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest::spy_assert_payload
+&#45;&#45;-
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="17e64c0e-cad4-489d-8cde-f110cab6518f" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest::spy_assert_variables
+&#45;&#45;-
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="107bd6dc-e43b-4e70-9eba-895d30e5a8f5" >
+				<munit:payload value="#[readUrl('classpath://deletecustomerOKtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://deletecustomerOKtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://deletecustomerOKtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\customer:customermngmt-config" doc:id="319744a0-fe6e-49e0-b703-4579a74af0fc" name="delete:\customer:customermngmt-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="922a9d6f-673e-451a-80de-de85ce6f6698" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest::assert_expression_payload
+&#45;&#45;-
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="a053dfe9-eb4b-4289-a0c5-c1309427bcad" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0d676a15-dfe1-41e9-961d-b1921931e5c9" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="589a2f15-0af7-4f5a-b249-5c236609f3b6" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="00ff00b6-4201-48d5-99a1-8b87d864560a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="1d113d3a-9759-4f20-91ed-e25433f0af51" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test> [STUDIO] -->
+<!-- [STUDIO:"delete:\customer:KO-test"]	<munit:test name="delete:\customer:KO-test" doc:id="35f1b634-9647-4a80-b5fd-fbda8b7e1185" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Read" doc:id="86037dcd-00d6-4cf4-b449-c1fa1859efb8" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_payload.dwl')]" mediaType="text/csv" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://deletecustomerOKtest1\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://deletecustomerOKtest1\mock_variable_.dwl')]" />
+						<munit-tools:variable key="clientKey" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Set Variable" doc:id="8acf8c5c-d1a2-4ebc-a1cd-d6bd6bd2e2b1" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4c6c702f-561f-4da2-bc3f-d8f62f6676ec" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="94250e3d-b3ba-460a-9149-4eb6398bb10e" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload
+&#45;&#45;-
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="54c2fd9e-2327-48db-b36d-1938ea389a5a" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload1
+&#45;&#45;-
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="a5084145-093d-4b06-b80c-30c9c5654e83" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_variables
+&#45;&#45;-
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="60527c75-c971-47a5-b125-5ae9b5884e62" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="b658cb3b-b38c-4d49-b3fa-c52dd1c72aea" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload2
+&#45;&#45;-
+spy_assert_payload2::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="7b62c2d7-00b3-467d-9ef9-363bf04dee83" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload3
+&#45;&#45;-
+spy_assert_payload3::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="7366121a-b6bf-46da-9094-e0f3095a881a" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_variables1
+&#45;&#45;-
+spy_assert_variables1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="285dac2a-2bfa-494e-b123-5b7019b753d1" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a44a9a56-d81d-4d4d-b092-5ffc544cb5b0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="c862fc9b-9b1c-4492-868d-94bd73ffcb8e" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload4
+&#45;&#45;-
+spy_assert_payload4::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="b5c6c639-4f43-47f2-8ee7-543d0832c299" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload5
+&#45;&#45;-
+spy_assert_payload5::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="9139e4ca-ee43-4d63-b6b3-e36c55053d4f" >
+				<munit:payload value="#[readUrl('classpath://deletecustomerOKtest1\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://deletecustomerOKtest1\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://deletecustomerOKtest1\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\customer:customermngmt-config" doc:id="5be70198-7fda-413c-9afe-ef8550423e39" name="delete:\customer:customermngmt-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="52501e96-79dc-4709-b3fc-a444485ddf65" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::assert_expression_payload
+&#45;&#45;-
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Set Variable clientKey" doc:id="e35fe511-07d9-4ba0-ae8e-58d71bd991be" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="96092611-f640-4684-a410-b3359a933aba" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="bfac6e54-21f0-40a1-949f-b5ddb0e02e2a" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0d676a15-dfe1-41e9-961d-b1921931e5c9" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set Variable" doc:id="55325347-8db1-481e-ba52-53ff5ae0156d" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4c6c702f-561f-4da2-bc3f-d8f62f6676ec" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="6628807b-0c68-40ba-ba59-38cdd1dfd912" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="7e9e11be-1f4b-4d57-b901-c2f452e018ca" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a44a9a56-d81d-4d4d-b092-5ffc544cb5b0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test> [STUDIO] -->
+
+
+</mule>

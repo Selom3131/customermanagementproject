@@ -28,6 +28,7 @@ output application/json
 				</on-error-propagate>
 			</error-handler>
 		</try>
+		<logger level="INFO" doc:name="Logger" doc:id="b3540e83-09a8-40b8-ac6a-5b1646bd8a15" message="#[payload]" category="ME VOICI"/>
 		<ee:transform doc:name="Transform Message" doc:id="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -231,7 +232,7 @@ payload]]></ee:set-payload>
     </flow>
 	<sub-flow name="noFileFoundErrorSub_Flow" doc:id="5b6dd6a9-91d2-42b4-803d-e9d8157aba9a" >
 		<logger level="INFO" doc:name="Logger" doc:id="8a56efdb-e9be-413b-8401-d2c6f0ef12ce" message="#[message.payload]"/>
-		<set-variable value="#[[]]" doc:name="Set Variable" doc:id="d943aa85-eb14-4691-a27e-d7ce080ea528" variableName="fileSize"/>
+		<set-variable value="#[[]]" doc:name="Set Variable" doc:id="d943aa85-eb14-4691-a27e-d7ce080ea528" variableName="data"/>
 	</sub-flow>
 	
 	</mule>

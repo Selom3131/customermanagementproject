@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="delete:\customer:customermngmt-configTest" doc:id="818e5047-7122-48e7-8655-f31dbac07f7e" description="Test" expectedErrorType="FILE:ILLEGAL_PATH">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f853a9c3-0a9c-4b37-ac59-f54c78bdbe75" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="#[attributes.queryParams.clientKey]" attributeName="value" />
+					<munit-tools:with-attribute whereValue="Set Variable clientKey" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="96092611-f640-4684-a410-b3359a933aba" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="bba28564-de03-4e34-b951-369f800e5962" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Read" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="FILE:ILLEGAL_PATH" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\customer:customermngmt-config" doc:id="673234ec-4383-4786-8a82-d6992b4a0330" name="delete:\customer:customermngmt-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="aa2d3aad-edaf-4df7-8ea3-69d7d43c6829" expression="#[payload.message]" is="#[MunitTools::equalTo('No customer found')]"/>
+		</munit:validation>
+	</munit:test>
+	
+	<munit:test name="delete:\KO-2" doc:id="d3b78e2c-ff68-42ad-b0ea-46524d723e6a" description="Test" expectedErrorType="FILE:ILLEGAL_PATH">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a2caa383-d2fb-40a2-b85a-4688af1bf051" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Set Variable clientKey" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="96092611-f640-4684-a410-b3359a933aba" attributeName="doc:id" />
+					
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="clientKey" value="#[output application/java --- readUrl('classpath://deletecustomerOKtest1\mock_variable_delete_client_key.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+
+			</munit-tools:mock-when>
+<!-- [STUDIO:"Mock when"]			<munit-tools:mock-when doc:name="Mock when" doc:id="98a577c2-ed2e-4a12-ba96-3f8cffde4894" processor="file:read">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="Read" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_payload.dwl')]" />
+					<munit-tools:attributes value="#[readUrl('classpath://deletecustomerOKtest\mock_attributes.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when> [STUDIO] -->
+			<munit-tools:mock-when doc:name="Mock Read" doc:id="81f3486c-84c9-4244-bbec-88b44bb15060" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv --- readUrl('classpath://deletecustomerOKtest1\mock_payload.dwl')]" mediaType="text/csv" encoding="UTF-8" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			
+<!-- [STUDIO:"Mock when"]			<munit-tools:mock-when doc:name="Mock when" doc:id="bad00fa3-04dc-4b83-95b9-6cb18ea0f8c1" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Read" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="clientKey" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when> [STUDIO] -->
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="8ff329ca-692f-4644-a011-32923461642d" processor="ee:transform">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:after-call>
+					<munit-tools:assert doc:name="Assert payload" doc:id="c1ea875a-31be-4d9c-8a16-99cc00978abc" message="The payload does not match">
+						<munit-tools:that><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload6
+---
+spy_assert_payload6::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert payload" doc:id="2f49bf7a-7f5b-400d-8590-bfb0c009722c" message="The payload does not match 2">
+						<munit-tools:that><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload3
+---
+spy_assert_payload3::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="1849b6c6-c3ff-4643-8543-38d3dbf5c477" message="The variables do not match">
+						<munit-tools:that><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_variables1
+---
+spy_assert_variables1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<set-variable value="#[1]" doc:name="Set Variable" doc:id="f5a71f52-4b18-4ed0-b6b5-ce804a36f730" variableName="searchRes" />
+				
+</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="82faeae5-1250-4863-99a8-435eb2a2e0d0" processor="file:write">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Write" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1594c638-16a4-477c-9535-a381f3daccf7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="FILE:ILLEGAL_PATH" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Event" doc:id="a787ecf8-56f3-4a65-a732-4b71ae16ef78" />
+		
+</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\customer:customermngmt-config" doc:id="962ca0ee-7b57-4aa2-9342-e9c85f8a2e67" name="delete:\customer:customermngmt-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c03a6808-46f4-4334-8f18-12ec9545db39" expression="#[payload.message]" is="#[MunitTools::equalTo('No customer found')]"/>
+		</munit:validation>
+	</munit:test>
+	
+	
+	<munit:test name="delete:\OK-2" doc:id="19bb7548-aa17-4919-9501-2ac099029e9b" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="57c01ee7-2c5c-45fc-a5ac-76c2e3ccdd69" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Set Variable clientKey" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="96092611-f640-4684-a410-b3359a933aba" attributeName="doc:id" />
+					
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="clientKey" value="#[output application/java --- readUrl('classpath://deletecustomerOKtest1\mock_variable_delete_client_key.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+
+			
+</munit-tools:mock-when>
+<!-- [STUDIO:"Mock when"]			<munit-tools:mock-when doc:name="Mock when" doc:id="618ddbd4-2dd7-4f1f-a2f1-7be5af783af3" processor="file:read">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="Read" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_payload.dwl')]" />
+					<munit-tools:attributes value="#[readUrl('classpath://deletecustomerOKtest\mock_attributes.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when> [STUDIO] -->
+			<munit-tools:mock-when doc:name="Mock Read" doc:id="d116c743-b780-470b-ae90-36b8ebe0c68f" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv --- readUrl('classpath://deletecustomerOKtest1\mock_payload.dwl')]" mediaType="text/csv" encoding="UTF-8" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			
+<!-- [STUDIO:"Mock when"]			<munit-tools:mock-when doc:name="Mock when" doc:id="053aa2f5-6206-4e97-939c-e18296c18856" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Read" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="99b6418c-1027-4381-86ca-126263ced880" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output text/csv &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="clientKey" value="#[output application/java &#45;&#45;- readUrl('classpath://deletecustomerOKtest1\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when> [STUDIO] -->
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="b1c61142-9e86-4f85-b8a6-7e507f69fe32" processor="ee:transform">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="ba92dc77-9cf0-4e1d-bb1e-9d9535db80a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:after-call>
+					<munit-tools:assert doc:name="Assert payload" doc:id="943f3357-5243-4fc2-a6ea-b8d88f6d875f" message="The payload does not match">
+						<munit-tools:that><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload6
+---
+spy_assert_payload6::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert payload" doc:id="6d7f7320-6b7b-4dcf-8c47-544f76c346ff" message="The payload does not match 2">
+						<munit-tools:that><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_payload3
+---
+spy_assert_payload3::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="44e97040-63f3-42d8-96b1-81e199f9ca8a" message="The variables do not match">
+						<munit-tools:that><![CDATA[#[%dw 2.0
+import deletecustomerOKtest1::spy_assert_variables1
+---
+spy_assert_variables1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				
+</munit-tools:after-call>
+			</munit-tools:spy>
+<!-- [STUDIO:"Mock when"]			<munit-tools:mock-when doc:name="Mock when" doc:id="c4b7ce81-5c36-4f26-8cd7-45b8889c63a0" processor="file:write">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Write" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1594c638-16a4-477c-9535-a381f3daccf7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when> [STUDIO] -->
+			<munit:set-event doc:name="Set Event" doc:id="afcdcf9f-e467-4769-9bc6-8b5b6e3bd11b" />
+		
+</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\customer:customermngmt-config" doc:id="5284c529-4f35-468e-a541-e508915f5c74" name="delete:\customer:customermngmt-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="603b9a81-19de-41f1-be1e-2a3ff2b8fee7" expression="#[payload]" is="#[MunitTools::equalTo('Deleted')]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implementation-test-suite-noFileFoundErrorSub_FlowTest" doc:id="17599ef6-de07-403c-a7b2-628fac4ce653" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to noFileFoundErrorSub_Flow" doc:id="7903b4f5-785a-4b81-a1ad-736c6888b859" name="noFileFoundErrorSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="3ca42dc3-62b5-4d9e-b260-f9001b352b7b" processor="logger" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8a56efdb-e9be-413b-8401-d2c6f0ef12ce" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="262c7c8f-9f19-4ccf-95bb-b4e200e47348" processor="set-variable" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Set Variable" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d943aa85-eb14-4691-a27e-d7ce080ea528" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

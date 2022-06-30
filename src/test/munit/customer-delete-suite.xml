@@ -57,7 +57,7 @@ assert_expression_variables::main({payload: payload, attributes: attributes, var
 			</munit-tools:verify-call>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="delete:\customer:delete-customer-with-valid-clientkey-test" doc:id="2ceba270-7ff7-435d-95cf-bddef3d25ca3" >
+<!-- [STUDIO:"delete:\customer:delete-customer-with-valid-clientkey-test"]	<munit:test name="delete:\customer:delete-customer-with-valid-clientkey-test" doc:id="2ceba270-7ff7-435d-95cf-bddef3d25ca3" >
 		<munit:behavior >
 			<munit:set-event doc:name="Set Input" doc:id="951e98ee-2dcb-4a78-b806-8e9eec1fb8a1" >
 				<munit:attributes value="#[readUrl('classpath://deletecustomerdeletecustomerwithvalidclientkeytest\set-event_attributes.dwl')]" />
@@ -70,13 +70,13 @@ assert_expression_variables::main({payload: payload, attributes: attributes, var
 			<munit-tools:assert doc:name="Assert payload" doc:id="cf122371-8cef-4aaa-95b8-7078210ce758" message="The payload does not match">
 				<munit-tools:that ><![CDATA[#[%dw 2.0
 import deletecustomerdeletecustomerwithvalidclientkeytest::assert_expression_payload
----
+&#45;&#45;-
 assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
 			</munit-tools:assert>
 			<munit-tools:assert doc:name="Assert variables" doc:id="62a7a9ee-4c94-4657-9b5e-d167ef5cbaf8" message="The variables do not match">
 				<munit-tools:that ><![CDATA[#[%dw 2.0
 import deletecustomerdeletecustomerwithvalidclientkeytest::assert_expression_variables
----
+&#45;&#45;-
 assert_expression_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
 			</munit-tools:assert>
 			<munit-tools:verify-call doc:name="Verify Set Variable clientKey" doc:id="6d77d801-0b9c-4168-a208-1f7d86f9f108" processor="set-variable" times="1">
@@ -115,7 +115,7 @@ assert_expression_variables::main({payload: payload, attributes: attributes, var
 				</munit-tools:with-attributes>
 			</munit-tools:verify-call>
 		</munit:validation>
-	</munit:test>
+	</munit:test> [STUDIO] -->
 
 
 </mule>
