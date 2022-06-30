@@ -103,7 +103,7 @@ output application/json
 			<error-handler>
 				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c2070e6d-6536-466a-af9e-882dbe26a11a" >
 					<set-variable value="404" doc:name="Set httpStatus Code" doc:id="21218904-772f-42de-b8c7-a534559186dd" variableName="httpStatus"/>
-					<set-variable value='#["No customer found"]' doc:name="Set Variable" doc:id="7b23f396-574e-4292-b6d6-997fc53f8a29" variableName="httpResponsePhrase"/>
+					<set-variable value='#["No customer found."]' doc:name="Set Variable" doc:id="7b23f396-574e-4292-b6d6-997fc53f8a29" variableName="httpResponsePhrase"/>
 					<ee:transform doc:name="Transform Message" doc:id="94659756-3efa-435a-98d1-2e8dba3acc26" >
 						<ee:message >
 							<ee:set-payload ><![CDATA[%dw 2.0
