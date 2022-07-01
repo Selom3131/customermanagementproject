@@ -21,7 +21,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 output application/json
 ---
 {
-	message : "No customer found."
+	message : "No customer found"
 }]]></ee:set-payload>
 						</ee:message>
 					</ee:transform>
@@ -90,7 +90,7 @@ output application/java
 output application/json
 ---
 {
-	message: "No customer found."
+	message: "No customer found"
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
